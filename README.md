@@ -23,25 +23,28 @@ Skeleton Loading Auto adalah implementasi efek skeleton loading untuk elemen tek
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skeleton Loading Auto</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
         }
         .container-card {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .card {
-            flex: 1 1 calc(25% - 10px);
-            min-width: 200px;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+         width: 100%;
+         display: flex;
+         flex-wrap: wrap; /* Agar elemen turun ke bawah jika tidak muat */
+         gap: 10px; /* Jarak antar elemen */
+}
+.card-s {
+    flex: 1 1 calc(25% - 10px); /* 4 kolom (25%) dengan jarak 10px */
+    min-width: 200px; /* Batas minimal ukuran */
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+        /* Skeleton untuk teks */
         [skeletonloading] {
             background: linear-gradient(90deg, #ddd 25%, #ccc 50%, #ddd 75%);
             background-size: 200% 100%;
@@ -50,6 +53,26 @@ Skeleton Loading Auto adalah implementasi efek skeleton loading untuk elemen tek
             position: relative;
             animation: shimmer 1.5s infinite;
         }
+
+        /* Skeleton untuk gambar dengan ID */
+        #skeletonImage {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: auto; /* Pastikan tinggi tetap */
+            object-fit: cover; /* Biar gambar tidak keluar dari card */
+        }
+
+        #skeletonImage::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #ddd 25%, #ccc 50%, #ddd 75%);
+            background-size: 200% 100%;
+            border-radius: 5px;
+            animation: shimmer 1.5s infinite;
+        }
+
         @keyframes shimmer {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
@@ -57,25 +80,68 @@ Skeleton Loading Auto adalah implementasi efek skeleton loading untuk elemen tek
     </style>
 </head>
 <body>
+
 <div class="container-card">
-    <div class="card">
-        <img skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
+    <div class="card-s">
+        <img id="skeletonImage" skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
         <h3 skeletonloading>Graphic designers.</h3>
-        <p skeletonloading>You'll need these to become graphic designers.</p>
+        <p skeletonloading>you'll need these to become graphic designers.</p>
+    </div>
+    <div class="card-s">
+        <img id="skeletonImage" skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
+        <h3 skeletonloading>Graphic designers.</h3>
+        <p skeletonloading>you'll need these to become graphic designers.</p>
+    </div>
+    <div class="card-s">
+        <img id="skeletonImage" skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
+        <h3 skeletonloading>Graphic designers.</h3>
+        <p skeletonloading>you'll need these to become graphic designers.</p>
+    </div>
+    <div class="card-s">
+        <img id="skeletonImage" skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
+        <h3 skeletonloading>Graphic designers.</h3>
+        <p skeletonloading>you'll need these to become graphic designers.</p>
+    </div>
+    <div class="card-s">
+        <img id="skeletonImage" skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
+        <h3 skeletonloading>Graphic designers.</h3>
+        <p skeletonloading>you'll need these to become graphic designers.</p>
+    </div>
+    <div class="card-s">
+        <img id="skeletonImage" skeletonloading src="https://i.pinimg.com/736x/f6/15/6f/f6156f53687bd2148a5478667095740a.jpg" alt="Nature">
+        <h3 skeletonloading>Graphic designers.</h3>
+        <p skeletonloading>you'll need these to become graphic designers.</p>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll("[skeletonloading]").forEach(element => {
-            setTimeout(() => {
-                element.removeAttribute("skeletonloading");
-                element.style.color = "";
-            }, 800);
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let imgElement = document.getElementById("skeletonImage");
+            
+            imgElement.addEventListener("load", () => {
+                imgElement.style.background = "none"; // Hapus background skeleton
+                imgElement.style.animation = "none"; // Matikan animasi
+                imgElement.removeAttribute("skeletonloading");
+            });
+
+            if (imgElement.complete) {
+                imgElement.dispatchEvent(new Event("load"));
+            }
+
+            document.querySelectorAll("[skeletonloading]").forEach(element => {
+                if (element !== imgElement) {
+                    setTimeout(() => {
+                        element.removeAttribute("skeletonloading");
+                        element.style.color = ""; // Kembalikan warna teks
+                    }, 800);
+                }
+            });
         });
-    });
-</script>
+    </script>
+
 </body>
 </html>
+
 ```
 
 ## Catatan
